@@ -1,0 +1,35 @@
+.question-container {
+	display: grid;
+	/* flex-direction: column; */
+	width: 80%;
+}
+
+.question-box {
+	border: 2px solid white;
+	padding: 0.8rem;
+	margin: 2rem 0;
+	border-radius: 25px;
+}
+
+.options {
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: space-between;
+}
+
+.options button {
+	width: 100%;
+	flex: 0 50% 45%;
+}
+
+.options button:hover {
+	background-color: #80ffdb;
+	color: black;
+}
+
+.options button:active {
+	background-color: aliceblue;
+}
+.options button:disabled {
+	background-color: grey;
+}

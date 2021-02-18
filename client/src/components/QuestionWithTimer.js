@@ -1,8 +1,7 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import './question.css';
-import Timer from './Timer';
 
-const Question = (props) => {
+const QuestionWithTimer = (props) => {
 	const [selectedOption, setSelectedOption] = useState();
 	const [optionDisabled, setOptionDisabled] = useState(false);
 	console.log(props);
@@ -16,14 +15,24 @@ const Question = (props) => {
 			props.setQuestionStatus('notCorrect');
 		}
 	};
+	const [count, setCount] = useState(props.timerLength);
+	// const [timeLeft, setTimeLeft] = useState()
+	useEffect(() => {
+		if (count > 0) {
+			setTimeout(() => {
+				setCount(count - 1);
+			}, 1000);
+		} else {
+			console.log('Times Ups!!');
+			props.setQuestionStatus('timesUp');
+		}
+		// const timer =
+	}, [count, props]);
 	return (
 		<div className='question-container'>
-			{props.timerLength && (
-				<Timer
-					timerLength={props.timerLength}
-					setQuestionStatus={props.setQuestionStatus}
-				/>
-			)}
+			<div className='timer-container'>
+				<h3>Timer: {count}</h3>
+			</div>
 			<div className='question-box'>{props.prompt}</div>
 			<div className='options'>
 				<button
@@ -60,4 +69,4 @@ const Question = (props) => {
 	);
 };
 
-export default Question;
+export default QuestionWithTimer;

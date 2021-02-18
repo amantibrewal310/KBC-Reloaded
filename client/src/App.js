@@ -9,7 +9,9 @@ import Quiz from './components/Quiz';
 
 import { QuizContext } from './helpers/Context';
 import EndScreen from './components/EndScreen';
-import CashSet from './components/CashSet';
+import Signup from './components/Signup';
+import Login from './components/Login';
+import Timer from './components/Timer';
 
 function App() {
 	const [gameState, setGameState] = useState('menu');
@@ -17,8 +19,11 @@ function App() {
 	const { isLoading } = useAuth0();
 	if (isLoading) return <div>loading....</div>;
 	return (
-		<div>
+		<div className='main'>
 			<h1>KBC Reloaded</h1>
+			{/* <Signup /> */}
+			{/* <Login /> */}
+
 			<LoginButton />
 			<LogoutButton />
 			<Profile />
@@ -28,7 +33,6 @@ function App() {
 				{gameState === 'menu' && <MainMenu />}
 				{gameState === 'quiz' && <Quiz />}
 				{gameState === 'endScreen' && <EndScreen />}
-				<CashSet />
 			</QuizContext.Provider>
 		</div>
 	);
