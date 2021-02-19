@@ -9,30 +9,34 @@ import Quiz from './components/Quiz';
 
 import { QuizContext } from './helpers/Context';
 import EndScreen from './components/EndScreen';
-import Signup from './components/Signup';
-import Login from './components/Login';
-import Timer from './components/Timer';
 
 function App() {
 	const [gameState, setGameState] = useState('menu');
 	const [score, setScore] = useState(0);
+	const [minScore, setMinScore] = useState(0);
 	const { isLoading } = useAuth0();
 	if (isLoading) return <div>loading....</div>;
 	return (
 		<div className='main'>
 			<h1>KBC Reloaded</h1>
-			{/* <Signup /> */}
-			{/* <Login /> */}
 
 			<LoginButton />
 			<LogoutButton />
 			<Profile />
 			<QuizContext.Provider
-				value={{ gameState, setGameState, score, setScore }}
+				value={{
+					gameState,
+					setGameState,
+					score,
+					setScore,
+					minScore,
+					setMinScore,
+				}}
 			>
 				{gameState === 'menu' && <MainMenu />}
 				{gameState === 'quiz' && <Quiz />}
-				{gameState === 'endScreen' && <EndScreen />}
+				{(gameState === 'endScreen' ||
+					gameState === 'endScreenWinner') && <EndScreen />}
 			</QuizContext.Provider>
 		</div>
 	);

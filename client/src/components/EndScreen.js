@@ -1,11 +1,14 @@
 import React, { useContext } from 'react';
 import { QuizContext } from '../helpers/Context';
+import './endScreen.css';
 
 const EndScreen = () => {
-	const { gameState, setGameState } = useContext(QuizContext);
+	const { gameState, setGameState, score } = useContext(QuizContext);
 	return (
-		<div>
-			<h3>End Screen</h3>
+		<div className='endscreen-container'>
+			<h1>End Screen</h1>
+			{gameState === 'endScreenWinner' && <h1>WINNER!!!</h1>}
+			<h2>Your Score: {score}</h2>
 			<button
 				onClick={() => {
 					setGameState('menu');

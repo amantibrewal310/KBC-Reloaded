@@ -7,7 +7,7 @@ export const CashSetData = [
 	{
 		level: 2,
 		price: 2000,
-		checkpoint: false,
+		checkpoint: true,
 	},
 	{
 		level: 3,

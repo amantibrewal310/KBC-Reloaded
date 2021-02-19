@@ -6,69 +6,85 @@ import { CashSetData } from '../helpers/CashSetData';
 import Lifeline from './Lifeline';
 import CashSet from './CashSet';
 import './quiz.css';
-import Timer from './Timer';
 import QuestionWithTimer from './QuestionWithTimer';
 
 const Quiz = () => {
-	const { gameState, setGameState } = useContext(QuizContext);
+	const { setGameState, score, setScore, minScore, setMinScore } = useContext(
+		QuizContext
+	);
 	const [curLevel, setCurLevel] = useState(0);
 	const [questionStatus, setQuestionStatus] = useState('notAnswered');
 	const [question, setQuestion] = useState({});
-	const [timerLength, setTimerLength] = useState(10);
-
-	console.log(gameState);
-
+	const [fiftyFifty, setFiftyFifty] = useState(true);
+	const [switchQues, setSwitchQues] = useState(true);
+	const numberOfQuestion = 15;
 	const nextQuestionHandler = () => {
-		if (curLevel === 15) {
+		if (CashSetData[curLevel].checkpoint) {
+			setMinScore(score);
+		}
+		if (curLevel === numberOfQuestion - 1) {
 			setGameState('endScreenWinner');
 		} else {
 			setCurLevel(curLevel + 1);
 			setQuestionStatus('notAnswered');
-			setQuestion(Questions[curLevel]);
-			setTimerLength(10);
 		}
 	};
 	useEffect(() => {
 		setQuestion(Questions[curLevel]);
-		// if(questionStatus === "noCorrect") {
-
-		// }
 	}, [curLevel]);
-	console.log(curLevel, 'CUrrentLevel');
+	useEffect(() => {
+		setScore(0);
+		setMinScore(0);
+	}, []);
 
 	return (
 		<>
 			<div className='Quiz'>
 				<h1>Quiz</h1>
-				{curLevel < 6 && (
+				<h3>Score: {score}</h3>
+				{curLevel < numberOfQuestion / 3 && (
 					<QuestionWithTimer
-						{...question}
+						question={question}
 						currentLevel={curLevel}
 						questionStatus={questionStatus}
 						setQuestionStatus={setQuestionStatus}
 						timerLength={10}
+						setScore={setScore}
+						minScore={minScore}
+						price={CashSetData[curLevel].price}
 					/>
 				)}
-				{curLevel >= 6 && (
-					<Question
-						{...question}
-						currentLevel={curLevel}
-						questionStatus={questionStatus}
-						setQuestionStatus={setQuestionStatus}
-					/>
-				)}
+				{curLevel >= numberOfQuestion / 3 &&
+					curLevel < numberOfQuestion && (
+						<Question
+							question={question}
+							currentLevel={curLevel}
+							questionStatus={questionStatus}
+							setQuestionStatus={setQuestionStatus}
+							setScore={setScore}
+							minScore={minScore}
+							price={CashSetData[curLevel].price}
+						/>
+					)}
 				<div className='msg'>
 					{questionStatus === 'notCorrect' && <p>Sorry</p>}
 					{questionStatus === 'timesUp' && <p>Sorry Times UP!!</p>}
 					{questionStatus === 'correct' && (
 						<p>
-							Congratulations! You have won{' '}
+							Congratulations! You have won
 							{CashSetData[curLevel].price}
 						</p>
 					)}
 				</div>
 				{questionStatus === 'notAnswered' && (
-					<Lifeline question={question} setQuestion={setQuestion} />
+					<Lifeline
+						question={question}
+						setQuestion={setQuestion}
+						fiftyFifty={fiftyFifty}
+						setFiftyFifty={setFiftyFifty}
+						switchQues={switchQues}
+						setSwitchQues={setSwitchQues}
+					/>
 				)}
 
 				{questionStatus === 'correct' && (

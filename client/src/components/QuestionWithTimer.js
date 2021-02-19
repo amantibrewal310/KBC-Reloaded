@@ -1,63 +1,97 @@
 import React, { useEffect, useState } from 'react';
 import './question.css';
+let timer;
 
 const QuestionWithTimer = (props) => {
-	const [selectedOption, setSelectedOption] = useState();
+	const {
+		setQuestionStatus,
+		question,
+		timerLength,
+		currentLevel,
+		minScore,
+		setScore,
+		price,
+	} = props;
+
+	const [selectedOption, setSelectedOption] = useState(null);
 	const [optionDisabled, setOptionDisabled] = useState(false);
-	console.log(props);
+	const [count, setCount] = useState(timerLength);
 
 	const lockHandler = () => {
 		setOptionDisabled(true);
-
-		if (selectedOption === props.answer) {
-			props.setQuestionStatus('correct');
+		clearTimeout(timer);
+		if (selectedOption === question.answer) {
+			setQuestionStatus('correct');
+			setScore(price);
 		} else {
-			props.setQuestionStatus('notCorrect');
+			setQuestionStatus('notCorrect');
+			setScore(minScore);
 		}
 	};
-	const [count, setCount] = useState(props.timerLength);
-	// const [timeLeft, setTimeLeft] = useState()
+	useEffect(() => {
+		clearTimeout(timer);
+		setOptionDisabled(false);
+		setSelectedOption(null);
+		setCount(timerLength);
+	}, [currentLevel, timerLength]);
+
+	useEffect(() => {
+		clearTimeout(timer);
+		return () => clearTimeout(timer);
+	}, []);
+
 	useEffect(() => {
 		if (count > 0) {
-			setTimeout(() => {
+			timer = setTimeout(() => {
 				setCount(count - 1);
 			}, 1000);
 		} else {
-			console.log('Times Ups!!');
-			props.setQuestionStatus('timesUp');
+			clearTimeout(timer);
+			setQuestionStatus('timesUp');
 		}
-		// const timer =
-	}, [count, props]);
+	}, [count, setQuestionStatus]);
 	return (
 		<div className='question-container'>
 			<div className='timer-container'>
 				<h3>Timer: {count}</h3>
 			</div>
-			<div className='question-box'>{props.prompt}</div>
+			<div className='question-box'>{question.prompt}</div>
 			<div className='options'>
 				<button
+					className={
+						selectedOption === 'optionA' ? 'btn-active' : 'btn'
+					}
 					onClick={() => setSelectedOption('optionA')}
-					disabled={optionDisabled}
+					disabled={optionDisabled || question.optionA === ''}
 				>
-					{props.optionA}
+					{question.optionA}
 				</button>
 				<button
+					className={
+						selectedOption === 'optionB' ? 'btn-active' : 'btn'
+					}
 					onClick={() => setSelectedOption('optionB')}
-					disabled={optionDisabled}
+					disabled={optionDisabled || question.optionB === ''}
 				>
-					{props.optionB}
+					{question.optionB}
 				</button>
 				<button
+					className={
+						selectedOption === 'optionC' ? 'btn-active' : 'btn'
+					}
 					onClick={() => setSelectedOption('optionC')}
-					disabled={optionDisabled}
+					disabled={optionDisabled || question.optionC === ''}
 				>
-					{props.optionC}
+					{question.optionC}
 				</button>
 				<button
+					className={
+						selectedOption === 'optionD' ? 'btn-active' : 'btn'
+					}
 					onClick={() => setSelectedOption('optionD')}
-					disabled={optionDisabled}
+					disabled={optionDisabled || question.optionD === ''}
 				>
-					{props.optionD}
+					{question.optionD}
 				</button>
 			</div>
 			{selectedOption && props.questionStatus === 'notAnswered' && (

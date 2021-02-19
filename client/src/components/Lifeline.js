@@ -1,14 +1,20 @@
-import React, { useState } from 'react';
+import React from 'react';
+import { extraQuestion } from '../helpers/QuestionBank';
+import './Lifeline.css';
 
 const Lifeline = (props) => {
-	console.log(props);
-	const [lifeline1, setLifeline1] = useState(true);
-	const [lifeline2, setLifeline2] = useState(true);
+	const {
+		question,
+		setQuestion,
+		fiftyFifty,
+		setFiftyFifty,
+		switchQues,
+		setSwitchQues,
+	} = props;
 
-	const lifeline1Handler = () => {
-		console.log(lifeline1);
-		let ans = props.question.answer;
-		let q = { ...props.question };
+	const fiftyFiftyHandler = () => {
+		let ans = question.answer;
+		let q = { ...question };
 
 		let arr = [];
 
@@ -24,27 +30,29 @@ const Lifeline = (props) => {
 				arr.push('D');
 			}
 		}
-		console.log(arr);
 		let i = Math.floor(Math.random() * 3);
 		q['option' + arr[i]] = '';
 		arr.splice(i, 1);
 		i = Math.floor(Math.random() * 2);
 		q['option' + arr[i]] = '';
 
-		props.setQuestion(q);
-		setLifeline1(false);
+		setQuestion(q);
+		setFiftyFifty(false);
+		// setLifeline1(false);
 	};
-	const lifeline2Handler = () => {
-		console.log(lifeline2);
-		setLifeline2(false);
+	const switchQuesHandler = () => {
+		let len = extraQuestion.length;
+		let i = Math.floor(Math.random() * len);
+		setQuestion(extraQuestion[i]);
+		setSwitchQues(false);
 	};
 
 	return (
-		<div>
-			<button disabled={!lifeline1} onClick={lifeline1Handler}>
+		<div className='lifeline-container'>
+			<button disabled={!fiftyFifty} onClick={fiftyFiftyHandler}>
 				50 50
 			</button>
-			<button disabled={!lifeline2} onClick={lifeline2Handler}>
+			<button disabled={!switchQues} onClick={switchQuesHandler}>
 				Switch Question
 			</button>
 		</div>

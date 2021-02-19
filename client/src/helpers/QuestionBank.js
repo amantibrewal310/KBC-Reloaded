@@ -8,12 +8,12 @@ export const Questions = [
 		answer: 'optionC',
 	},
 	{
-		prompt: 'What is 1 + 3??',
+		prompt: 'What is 1 + 4??',
 		optionA: '24',
-		optionB: '21',
+		optionB: '5',
 		optionC: '4',
 		optionD: '2',
-		answer: 'optionC',
+		answer: 'optionB',
 	},
 	{
 		prompt: 'What is 1 + 3??',
@@ -118,5 +118,24 @@ export const Questions = [
 		optionC: '4',
 		optionD: '2',
 		answer: 'optionC',
+	},
+];
+
+export const extraQuestion = [
+	{
+		prompt: 'Who played the role of Sherlock Homes in TV Series??',
+		optionA: 'Robert Downey Jr',
+		optionB: 'Tony Stark',
+		optionC: 'Benedict Cummberbatch',
+		optionD: 'None',
+		answer: 'optionC',
+	},
+	{
+		prompt: 'Who played the role of Sherlock Homes in Movie??',
+		optionA: 'Robert Downey Jr',
+		optionB: 'Tony Stark',
+		optionC: 'Benedict Cummberbatch',
+		optionD: 'None',
+		answer: 'optionA',
 	},
 ];

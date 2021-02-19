@@ -1,57 +1,76 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import './question.css';
-import Timer from './Timer';
 
 const Question = (props) => {
-	const [selectedOption, setSelectedOption] = useState();
+	const {
+		setQuestionStatus,
+		questionStatus,
+		question,
+		currentLevel,
+		setScore,
+		minScore,
+		price,
+	} = props;
+	const [selectedOption, setSelectedOption] = useState(null);
 	const [optionDisabled, setOptionDisabled] = useState(false);
-	console.log(props);
+
+	useEffect(() => {
+		setOptionDisabled(false);
+		setSelectedOption(null);
+	}, [currentLevel]);
 
 	const lockHandler = () => {
 		setOptionDisabled(true);
-
-		if (selectedOption === props.answer) {
-			props.setQuestionStatus('correct');
+		if (selectedOption === question.answer) {
+			setQuestionStatus('correct');
+			setScore(price);
 		} else {
-			props.setQuestionStatus('notCorrect');
+			setQuestionStatus('notCorrect');
+			setScore(minScore);
 		}
 	};
 	return (
 		<div className='question-container'>
-			{props.timerLength && (
-				<Timer
-					timerLength={props.timerLength}
-					setQuestionStatus={props.setQuestionStatus}
-				/>
-			)}
-			<div className='question-box'>{props.prompt}</div>
+			<div className='question-box'>{question.prompt}</div>
 			<div className='options'>
 				<button
+					className={
+						selectedOption === 'optionA' ? 'btn-active' : 'btn'
+					}
 					onClick={() => setSelectedOption('optionA')}
 					disabled={optionDisabled}
 				>
-					{props.optionA}
+					{question.optionA}
 				</button>
 				<button
+					className={
+						selectedOption === 'optionB' ? 'btn-active' : 'btn'
+					}
 					onClick={() => setSelectedOption('optionB')}
 					disabled={optionDisabled}
 				>
-					{props.optionB}
+					{question.optionB}
 				</button>
 				<button
+					className={
+						selectedOption === 'optionC' ? 'btn-active' : 'btn'
+					}
 					onClick={() => setSelectedOption('optionC')}
 					disabled={optionDisabled}
 				>
-					{props.optionC}
+					{question.optionC}
 				</button>
 				<button
+					className={
+						selectedOption === 'optionD' ? 'btn-active' : 'btn'
+					}
 					onClick={() => setSelectedOption('optionD')}
 					disabled={optionDisabled}
 				>
-					{props.optionD}
+					{question.optionD}
 				</button>
 			</div>
-			{selectedOption && props.questionStatus === 'notAnswered' && (
+			{selectedOption && questionStatus === 'notAnswered' && (
 				<button onClick={lockHandler} className='question-lock'>
 					Lock
 				</button>
